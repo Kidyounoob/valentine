@@ -12,7 +12,6 @@
       --sky1:#cfefff;
       --sky2:#8bd3ff;
       --sky3:#2b7bbb;
-      --ice:#e9f7ff;
       --card: rgba(255,255,255,.78);
       --stroke: rgba(255,255,255,.62);
       --shadow: 0 24px 80px rgba(0,0,0,.18);
@@ -28,10 +27,9 @@
     html,body{ height:100%; }
     body{
       margin:0;
-      overflow:hidden; /* no scrollbars */
+      overflow:hidden;
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
       color:var(--text);
-
       background:
         radial-gradient(1200px 700px at 18% 12%, rgba(255,255,255,.65), transparent 62%),
         radial-gradient(1000px 650px at 85% 22%, rgba(255,255,255,.35), transparent 60%),
@@ -41,7 +39,6 @@
       isolation:isolate;
     }
 
-    /* soft “aurora” ribbons */
     .aurora{
       position:fixed;
       inset:-20%;
@@ -61,7 +58,6 @@
       to{ transform: translate3d(2%, 1%, 0) scale(1.06); }
     }
 
-    /* snow + sparkle canvases */
     canvas.layer{
       position:fixed;
       inset:0;
@@ -99,7 +95,6 @@
       overflow:hidden;
     }
 
-    /* frosty edge */
     .card::before{
       content:"";
       position:absolute;
@@ -109,18 +104,6 @@
       opacity:.45;
       pointer-events:none;
       mask: linear-gradient(#000, transparent 70%);
-    }
-
-    .badge{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.72);
-      font-weight: 900;
-      font-size: 13px;
-      width: fit-content;
     }
 
     .hero{
@@ -149,7 +132,6 @@
       color: rgba(11,34,57,.92);
     }
 
-    /* animated typing feel for the question line */
     .typeLine{
       display:inline-block;
       position:relative;
@@ -239,18 +221,6 @@
       display:grid;
       gap:10px;
     }
-    .imgTitle{
-      margin:0;
-      font-size: 18px;
-      letter-spacing:-.01em;
-      font-weight: 950;
-    }
-    .imgSub{
-      margin:0;
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.55;
-    }
 
     .photo{
       width:100%;
@@ -265,22 +235,6 @@
     }
     .photo:hover{ transform: scale(1.01); }
 
-    .note{
-      padding: 18px;
-      text-align:center;
-    }
-    .note h2{
-      margin: 10px 0 8px;
-      font-size: 22px;
-      letter-spacing:-.01em;
-    }
-    .note p{
-      margin:0 auto;
-      max-width: 68ch;
-      color: var(--muted);
-      line-height: 1.65;
-    }
-
     .back{
       margin-top: 12px;
       display:inline-block;
@@ -290,7 +244,6 @@
     }
     .back:hover{ text-decoration:underline; }
 
-    /* subtle sparkle dots (CSS) */
     .sparkle{
       position:fixed;
       width:4px;height:4px;
@@ -308,7 +261,6 @@
       100%{ opacity:0; transform: scale(1.8); }
     }
 
-    /* reduce motion */
     @media (prefers-reduced-motion: reduce){
       .aurora{ animation:none; }
       .typeLine::after{ display:none; }
@@ -327,8 +279,6 @@
   <div class="wrap">
     <main class="container" role="main" aria-label="Winter Formal page">
       <section class="card hero">
-        <div class="badge">❄️ Winter vibes</div>
-
         <div class="emojiRow" aria-hidden="true">💐❄️✨</div>
 
         <h1 class="title">
@@ -337,8 +287,7 @@
         </h1>
 
         <p class="sub">
-          From <span class="names">Aiden</span> to <span class="names">Hailie</span> —
-          I love you.
+          From <span class="names">Aiden</span> to <span class="names">Hailie</span> — I love you.
         </p>
 
         <div class="typeLine" id="typeLine">Tap “Yes” and make me the happiest ❄️</div>
@@ -358,36 +307,23 @@
 
       <section class="grid">
         <section class="card imgCard">
-          <h3 class="imgTitle">A little “official” moment</h3>
-          <p class="imgSub">Because asking you deserves a page that goes all out.</p>
           <img class="photo" alt="Winter Formal image 1"
                src="https://image2url.com/r2/default/images/1770002293456-c8b4a5ae-c054-44ae-9608-91c523ccce44.png" />
         </section>
 
         <section class="card imgCard">
-          <h3 class="imgTitle">The vibe I’m dreaming of</h3>
-          <p class="imgSub">You + me + winter lights + a perfect night.</p>
           <img class="photo" alt="Winter Formal image 2"
                src="https://image2url.com/r2/default/images/1770002319538-c3b9c75b-a322-49d1-a4ae-37313ad8b61e.png" />
         </section>
-      </section>
-
-      <section class="card note">
-        <div class="badge">💌 Message</div>
-        <h2>Hailie, I love you.</h2>
-        <p>
-          If you say yes, I’ll make the night special — pictures, laughs, and a memory we’ll keep forever.
-        </p>
       </section>
     </main>
   </div>
 
   <script>
-    // --- Sparkles that appear occasionally ---
+    // Sparkles
     (function sparkleLoop(){
       const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       if (prefersReduced) return;
-
       setInterval(() => {
         const s = document.createElement("div");
         s.className = "sparkle";
@@ -398,7 +334,7 @@
       }, 240);
     })();
 
-    // --- Snow (two-layer canvas for depth) ---
+    // Snow layers
     function setupSnow(canvas, config) {
       const ctx = canvas.getContext("2d");
       const state = { w: 0, h: 0, flakes: [] };
@@ -461,7 +397,6 @@
 
       window.addEventListener("resize", () => { resize(); init(); });
       resize(); init(); tick();
-      return { resize, init };
     }
 
     setupSnow(document.getElementById("snowBack"), {
@@ -478,7 +413,7 @@
       minA: 0.22, maxA: 0.55
     });
 
-    // --- Confetti burst on YES (icy colors) ---
+    // Confetti
     const confetti = document.getElementById("confetti");
     const cctx = confetti.getContext("2d");
 
@@ -535,7 +470,7 @@
       requestAnimationFrame(tick);
     }
 
-    // --- Buttons (YES = big message, NO = dodge) ---
+    // Buttons
     const yesBtn = document.getElementById("yesBtn");
     const noBtn = document.getElementById("noBtn");
     const resultBox = document.getElementById("resultBox");
@@ -549,7 +484,7 @@
     }
 
     yesBtn.addEventListener("click", () => {
-      showResult("YAYYYYY!!! ❄️💙", "I love you.");
+      showResult("YAYYYYY!!! 💙", "I love you.");
       yesBtn.disabled = true;
       noBtn.disabled = true;
       noBtn.style.opacity = 0.4;
@@ -572,7 +507,7 @@
     noBtn.addEventListener("mouseenter", moveNoButton);
     noBtn.addEventListener("touchstart", (e) => { e.preventDefault(); moveNoButton(); }, { passive: false });
 
-    // --- Tiny text animation for the “type line” (simple loop) ---
+    // Type line loop
     (function typeLoop(){
       const line = document.getElementById("typeLine");
       const msgs = [
