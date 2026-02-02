@@ -1,4 +1,6 @@
-<!-- /index.html -->
+<!-- =========================
+FILE: /index.html
+========================= -->
 <!doctype html>
 <html lang="en">
 <head>
@@ -22,13 +24,20 @@
       --radius: 26px;
       --max: 980px;
     }
+
     *{ box-sizing:border-box; }
     html,body{ height:100%; }
+
     body{
       margin:0;
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
       color:var(--text);
-      overflow:hidden; /* remove scrollbar */
+
+      /* ✅ scrolling (mobile-friendly) */
+      overflow-x: hidden;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+
       background:
         radial-gradient(1200px 700px at 15% 10%, rgba(255,255,255,.55), transparent 60%),
         radial-gradient(1000px 600px at 85% 20%, rgba(255,255,255,.35), transparent 60%),
@@ -41,16 +50,16 @@
     }
 
     .wrap{
-      height:100svh;
+      min-height:100svh;
       display:flex;
       align-items:center;
       justify-content:center;
-      padding: 18px 14px;
+      padding: 18px 14px 40px;
       position:relative;
       isolation:isolate;
     }
 
-    /* floating hearts: fixed so they never affect scroll */
+    /* floating hearts: fixed so they never affect scroll height */
     .heart{
       position:fixed;
       width:14px;height:14px;
@@ -201,7 +210,7 @@
       margin: 2px 0 0;
       font-size: 13px;
       color: rgba(31,31,31,.70);
-      font-weight: 800;
+      font-weight: 900;
       text-align:left;
     }
     @media (max-width: 900px){
@@ -268,7 +277,6 @@
           <img id="askImage" class="askImg" alt="Aiden asking Hailie to be his Valentine" />
         </section>
 
-        <!-- Replaced the entire note block with: line + new photo + made by -->
         <section class="card rightCol">
           <p class="rightLine">Ill give u a message. I love you.</p>
 
@@ -297,10 +305,8 @@
     document.getElementById("fromName").textContent = FROM_NAME;
     document.getElementById("toName").textContent = TO_NAME;
 
-    const hailiePhoto = document.getElementById("hailiePhoto");
-    const askImage = document.getElementById("askImage");
-    hailiePhoto.src = HAILIE_PHOTO_URL;
-    askImage.src = ASK_IMAGE_URL;
+    document.getElementById("hailiePhoto").src = HAILIE_PHOTO_URL;
+    document.getElementById("askImage").src = ASK_IMAGE_URL;
 
     // hearts
     const heartColors = ["#ff4d6d","#ff758f","#ffb3c1","#ffffff"];
@@ -312,7 +318,7 @@
       h.style.height = `${size}px`;
       h.style.left = `${Math.random() * 100}vw`;
       h.style.top = `${window.innerHeight + 24}px`;
-      h.style.background = heartColors[Math.floor(Math.random() * heartColors.length)];
+      h.style.background = heartColors[(Math.random() * heartColors.length) | 0];
       h.style.animationDuration = `${Math.random() * 3.2 + 3.8}s`;
       h.style.opacity = `${Math.random() * 0.35 + 0.35}`;
       document.body.appendChild(h);
@@ -341,7 +347,6 @@
       noBtn.style.top = `${y}px`;
       noBtn.style.zIndex = 4;
     }
-
     noBtn.addEventListener("mouseenter", moveNoButton);
     noBtn.addEventListener("touchstart", (e) => { e.preventDefault(); moveNoButton(); }, { passive: false });
   </script>
