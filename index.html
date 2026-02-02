@@ -12,7 +12,7 @@
       --bg1:#ffe0ec;
       --bg2:#ff7aa2;
       --bg3:#7b2cbf;
-      --card: rgba(255,255,255,.78);
+      --card: rgba(255,255,255,.80);
       --stroke: rgba(255,255,255,.55);
       --shadow: 0 18px 60px rgba(0,0,0,.14);
       --text:#1f1f1f;
@@ -23,14 +23,16 @@
       --radius: 26px;
       --max: 980px;
     }
-
     *{ box-sizing:border-box; }
     html,body{ height:100%; }
     body{
       margin:0;
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
       color:var(--text);
-      overflow-x:hidden;
+
+      /* Remove scrollbar entirely */
+      overflow: hidden;
+
       background:
         radial-gradient(1200px 700px at 15% 10%, rgba(255,255,255,.55), transparent 60%),
         radial-gradient(1000px 600px at 85% 20%, rgba(255,255,255,.35), transparent 60%),
@@ -41,18 +43,18 @@
     }
 
     .wrap{
-      min-height:100svh;
+      height: 100svh;
       display:flex;
       align-items:center;
       justify-content:center;
-      padding: 22px 14px 40px;
+      padding: 18px 14px;
       position:relative;
       isolation:isolate;
     }
 
-    /* floating hearts */
+    /* floating hearts (fixed so they never affect document scroll) */
     .heart{
-      position:absolute;
+      position:fixed;
       width:14px;height:14px;
       transform: rotate(45deg);
       opacity:.6;
@@ -60,6 +62,7 @@
       filter: blur(.1px);
       z-index:0;
       pointer-events:none;
+      will-change: transform;
     }
     .heart::before,.heart::after{
       content:"";
@@ -98,7 +101,6 @@
       grid-template-columns: 160px 1fr;
       align-items:center;
     }
-
     @media (max-width: 720px){
       .hero{ grid-template-columns: 1fr; text-align:center; }
     }
@@ -110,11 +112,10 @@
       padding: 8px 12px;
       border-radius: 999px;
       background: rgba(255,255,255,.7);
-      font-weight: 700;
+      font-weight: 800;
       font-size: 13px;
       width: fit-content;
     }
-
     @media (max-width: 720px){
       .badge{ margin: 0 auto; }
     }
@@ -125,18 +126,13 @@
       letter-spacing: -0.02em;
       line-height: 1.06;
     }
-
     .sub{
       margin:0 0 10px;
       font-size: 16px;
       line-height: 1.55;
       color: var(--muted);
     }
-
-    .names{
-      font-weight: 800;
-      color: rgba(31,31,31,.92);
-    }
+    .names{ font-weight: 900; color: rgba(31,31,31,.92); }
 
     .photo{
       width: 160px;
@@ -168,7 +164,7 @@
       box-shadow: 0 16px 40px rgba(0,0,0,.12);
       background: rgba(255,255,255,.55);
       object-fit: contain;
-      max-height: 360px;
+      max-height: 320px;
     }
 
     .btnRow{
@@ -188,7 +184,7 @@
       border-radius: 16px;
       padding: 12px 18px;
       font-size: 16px;
-      font-weight: 800;
+      font-weight: 900;
       cursor:pointer;
       box-shadow: 0 12px 28px rgba(0,0,0,.14);
       transition: transform 120ms ease, opacity 120ms ease, box-shadow 120ms ease;
@@ -204,46 +200,14 @@
       position: relative;
     }
 
-    .result{
-      display:none;
-      margin-top: 14px;
-      padding: 14px 14px;
-      border-radius: 18px;
-      background: rgba(255,255,255,.75);
-      border: 1px solid rgba(255,255,255,.62);
-    }
-    .result strong{ font-size: 18px; display:block; }
-    .result span{ display:block; margin-top: 6px; color: var(--muted); line-height: 1.5; }
-
     .mini{
       font-size: 13px;
       color: rgba(31,31,31,.7);
       margin-top: 10px;
     }
-
-    .fallback{
-      display:none;
-      margin-top: 10px;
-      padding: 10px 12px;
-      border-radius: 14px;
-      border: 1px dashed rgba(31,31,31,.28);
-      background: rgba(255,255,255,.55);
-      color: rgba(31,31,31,.78);
-      font-size: 13px;
-      line-height: 1.45;
-    }
-
-    canvas.confetti{
-      position:fixed;
-      inset:0;
-      pointer-events:none;
-      z-index: 5;
-    }
   </style>
 </head>
 <body>
-  <canvas class="confetti" id="confetti"></canvas>
-
   <div class="wrap">
     <main class="container" role="main" aria-label="Valentine website">
       <section class="card hero">
@@ -254,7 +218,6 @@
           <p class="sub">
             From <span class="names" id="fromName">Aiden</span> to
             <span class="names" id="toName">Hailie</span> — I made this just to ask you one thing.
-            You’re my favorite person, and I’d love to make Valentine’s Day special with you.
           </p>
 
           <div class="btnRow">
@@ -262,16 +225,7 @@
             <button class="no" id="noBtn">No 😅</button>
           </div>
 
-          <div class="result" id="resultBox" aria-live="polite">
-            <strong id="resultTitle"></strong>
-            <span id="resultText"></span>
-          </div>
-
-          <div class="fallback" id="photoFallback">
-            If the photo doesn’t load, the image host may block hotlinking.
-            Easiest fix: upload the image into your GitHub repo as <b>assets/hailie.jpg</b>
-            and change the URL in the code.
-          </div>
+          <div class="mini">Click “Yes” for your message 💘</div>
         </div>
       </section>
 
@@ -279,33 +233,22 @@
         <section class="card">
           <div class="badge">🫶 Proof I’m serious</div>
           <h2 style="margin:12px 0 8px; font-size:22px; letter-spacing:-.01em;">This is me asking you 👇</h2>
-          <p class="sub" style="margin:0 0 12px;">
-            I had to make it official. I hope this makes you smile.
-          </p>
           <img id="askImage" class="askImg" alt="Aiden asking Hailie to be his Valentine" />
-          <div class="fallback" id="askFallback">
-            If this image doesn’t load, upload it to your repo as <b>assets/aiden-ask.png</b>
-            and update the URL in the code.
-          </div>
         </section>
 
         <section class="card">
           <div class="badge">✨ A little note</div>
           <h2 style="margin:12px 0 8px; font-size:22px; letter-spacing:-.01em;">Hailie,</h2>
-          <p class="sub" style="margin:0 0 10px;">
-            You make everything better. If you say yes, I’ll handle the date and the snacks.
-          </p>
           <p class="sub" style="margin:0;">
-            (And if you try to press “No”… that button gets shy 😄)
+            Ill give u a message. I love you.
           </p>
-          <div class="mini">Made with ❤️ on GitHub Pages</div>
+          <div class="mini">Made with ❤️ by Aiden</div>
         </section>
       </section>
     </main>
   </div>
 
   <script>
-    // --- Customize here ---
     const FROM_NAME = "Aiden";
     const TO_NAME = "Hailie";
 
@@ -315,7 +258,15 @@
     const ASK_IMAGE_URL =
       "https://image2url.com/r2/default/images/1770001083301-98a99851-73cb-4efd-bd1b-def02bdf40b8.png";
 
-    // --- Background hearts ---
+    document.getElementById("fromName").textContent = FROM_NAME;
+    document.getElementById("toName").textContent = TO_NAME;
+
+    const hailiePhoto = document.getElementById("hailiePhoto");
+    const askImage = document.getElementById("askImage");
+    hailiePhoto.src = HAILIE_PHOTO_URL;
+    askImage.src = ASK_IMAGE_URL;
+
+    // Background hearts
     const heartColors = ["#ff4d6d","#ff758f","#ffb3c1","#ffffff"];
     function spawnHeart() {
       const h = document.createElement("div");
@@ -324,7 +275,7 @@
       h.style.width = `${size}px`;
       h.style.height = `${size}px`;
       h.style.left = `${Math.random() * 100}vw`;
-      h.style.bottom = `-24px`;
+      h.style.top = `${window.innerHeight + 24}px`;
       h.style.background = heartColors[Math.floor(Math.random() * heartColors.length)];
       h.style.animationDuration = `${Math.random() * 3.2 + 3.8}s`;
       h.style.opacity = `${Math.random() * 0.35 + 0.35}`;
@@ -333,35 +284,241 @@
     }
     setInterval(spawnHeart, 220);
 
-    // --- Populate content ---
-    document.getElementById("fromName").textContent = FROM_NAME;
-    document.getElementById("toName").textContent = TO_NAME;
-
-    const hailiePhoto = document.getElementById("hailiePhoto");
-    const askImage = document.getElementById("askImage");
-    const photoFallback = document.getElementById("photoFallback");
-    const askFallback = document.getElementById("askFallback");
-
-    hailiePhoto.src = HAILIE_PHOTO_URL;
-    askImage.src = ASK_IMAGE_URL;
-
-    hailiePhoto.onerror = () => { photoFallback.style.display = "block"; };
-    askImage.onerror = () => { askFallback.style.display = "block"; };
-
-    // --- Buttons ---
+    // Buttons
     const yesBtn = document.getElementById("yesBtn");
     const noBtn = document.getElementById("noBtn");
-    const resultBox = document.getElementById("resultBox");
-    const resultTitle = document.getElementById("resultTitle");
-    const resultText = document.getElementById("resultText");
 
-    function showResult(title, text) {
-      resultTitle.textContent = title;
-      resultText.textContent = text;
-      resultBox.style.display = "block";
+    yesBtn.addEventListener("click", () => {
+      window.location.href = "./formal.html";
+    });
+
+    function moveNoButton() {
+      const padding = 10;
+      const rect = noBtn.getBoundingClientRect();
+      const maxX = window.innerWidth - rect.width - padding;
+      const maxY = window.innerHeight - rect.height - padding;
+      const x = Math.max(padding, Math.random() * maxX);
+      const y = Math.max(padding, Math.random() * maxY);
+
+      noBtn.style.position = "fixed";
+      noBtn.style.left = `${x}px`;
+      noBtn.style.top = `${y}px`;
+      noBtn.style.zIndex = 4;
     }
 
-    // --- Confetti (no libraries) ---
+    noBtn.addEventListener("mouseenter", moveNoButton);
+    noBtn.addEventListener("touchstart", (e) => { e.preventDefault(); moveNoButton(); }, { passive: false });
+  </script>
+</body>
+</html>
+
+
+<!-- /formal.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Winter Formal? 💐</title>
+  <meta name="theme-color" content="#ff4d6d" />
+  <style>
+    :root{
+      --card: rgba(255,255,255,.82);
+      --stroke: rgba(255,255,255,.55);
+      --shadow: 0 18px 60px rgba(0,0,0,.16);
+      --text:#1f1f1f;
+      --muted: rgba(31,31,31,.72);
+      --yes:#16a34a;
+      --no:#ef4444;
+      --radius: 26px;
+      --max: 920px;
+    }
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--text);
+      overflow:hidden;
+
+      background:
+        radial-gradient(1200px 700px at 20% 10%, rgba(255,255,255,.55), transparent 60%),
+        radial-gradient(1000px 600px at 85% 25%, rgba(255,255,255,.35), transparent 60%),
+        radial-gradient(circle at 35% 20%, rgba(255,190,220,.9), transparent 55%),
+        radial-gradient(circle at 75% 35%, rgba(255,120,170,.75), transparent 55%),
+        radial-gradient(circle at 50% 85%, rgba(123,44,191,.55), transparent 60%),
+        linear-gradient(160deg, #ffd1dc 0%, #ff5d8f 45%, #7b2cbf 100%);
+    }
+
+    .wrap{
+      height:100svh;
+      display:grid;
+      place-items:center;
+      padding: 18px 14px;
+      position:relative;
+      isolation:isolate;
+    }
+
+    /* floating flowers */
+    .flower{
+      position:fixed;
+      left:0;
+      top:0;
+      transform: translate(-50%, -50%);
+      font-size: 22px;
+      opacity: .85;
+      pointer-events:none;
+      animation: drift linear forwards;
+      z-index:0;
+      filter: drop-shadow(0 10px 16px rgba(0,0,0,.12));
+      will-change: transform;
+    }
+    @keyframes drift{
+      from{ transform: translate(var(--x), calc(100vh + 40px)) rotate(0deg); }
+      to{ transform: translate(var(--x), -80px) rotate(360deg); }
+    }
+
+    .card{
+      width:min(100%, var(--max));
+      background: var(--card);
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px 18px;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index:1;
+      text-align:center;
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.7);
+      font-weight: 900;
+      font-size: 13px;
+    }
+
+    h1{
+      margin: 12px 0 8px;
+      font-size: clamp(30px, 5vw, 52px);
+      letter-spacing:-0.02em;
+      line-height:1.06;
+    }
+    p{
+      margin:0 auto;
+      max-width: 56ch;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    .bouquet{
+      margin: 14px auto 6px;
+      font-size: clamp(38px, 6vw, 64px);
+      line-height: 1.1;
+    }
+
+    .btnRow{
+      margin-top: 16px;
+      display:flex;
+      justify-content:center;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    button{
+      border:0;
+      border-radius: 16px;
+      padding: 12px 18px;
+      font-size: 16px;
+      font-weight: 900;
+      cursor:pointer;
+      box-shadow: 0 12px 28px rgba(0,0,0,.14);
+      transition: transform 120ms ease, opacity 120ms ease;
+      user-select:none;
+    }
+    button:active{ transform: translateY(1px) scale(.99); }
+    .yes{ background: var(--yes); color:#fff; }
+    .no{ background:#fff; color: var(--no); border: 2px solid rgba(239,68,68,.22); }
+
+    .result{
+      display:none;
+      margin-top: 14px;
+      padding: 14px 14px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.75);
+      border: 1px solid rgba(255,255,255,.62);
+      text-align:center;
+    }
+    .result strong{ font-size: 18px; display:block; }
+    .result span{ display:block; margin-top: 6px; color: var(--muted); }
+
+    canvas.confetti{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index: 5;
+    }
+
+    .back{
+      margin-top: 10px;
+      display:inline-block;
+      color: rgba(31,31,31,.7);
+      font-size: 13px;
+      text-decoration:none;
+    }
+    .back:hover{ text-decoration:underline; }
+  </style>
+</head>
+<body>
+  <canvas class="confetti" id="confetti"></canvas>
+
+  <div class="wrap">
+    <main class="card" role="main">
+      <div class="badge">💐 Flowers for you</div>
+      <div class="bouquet">💐🌷🌹🌸🌺💐</div>
+
+      <h1>Hailie, will you go to Winter Formal with me? ✨</h1>
+      <p>
+        I love you.
+      </p>
+
+      <div class="btnRow">
+        <button class="yes" id="yesBtn">Yes!!! 💖</button>
+        <button class="no" id="noBtn">No 😅</button>
+      </div>
+
+      <div class="result" id="resultBox" aria-live="polite">
+        <strong id="resultTitle"></strong>
+        <span id="resultText"></span>
+      </div>
+
+      <a class="back" href="./index.html">← back</a>
+    </main>
+  </div>
+
+  <script>
+    // Floating flowers
+    const flowers = ["💐","🌷","🌹","🌸","🌺","🌻","🪻"];
+    function spawnFlower() {
+      const f = document.createElement("div");
+      f.className = "flower";
+      f.textContent = flowers[(Math.random() * flowers.length) | 0];
+      const x = Math.random() * window.innerWidth;
+      const size = 18 + Math.random() * 22;
+      f.style.setProperty("--x", `${x}px`);
+      f.style.fontSize = `${size}px`;
+      f.style.opacity = `${0.55 + Math.random() * 0.35}`;
+      f.style.animationDuration = `${4.2 + Math.random() * 3.8}s`;
+      document.body.appendChild(f);
+      setTimeout(() => f.remove(), 9000);
+    }
+    setInterval(spawnFlower, 200);
+
+    // Confetti (no libraries)
     const canvas = document.getElementById("confetti");
     const ctx = canvas.getContext("2d");
 
@@ -378,7 +535,7 @@
     function confettiBurst() {
       const pieces = Array.from({ length: 180 }, () => ({
         x: window.innerWidth / 2,
-        y: window.innerHeight * 0.22,
+        y: window.innerHeight * 0.25,
         vx: (Math.random() - 0.5) * 12,
         vy: Math.random() * -10 - 6,
         g: 0.35 + Math.random() * 0.25,
@@ -388,7 +545,7 @@
         a: 1
       }));
 
-      const colors = ["#ff4d6d","#ff758f","#ffb3c1","#ffffff","#16a34a","#ffd60a"];
+      const colors = ["#ff4d6d","#ff758f","#ffb3c1","#ffffff","#16a34a","#ffd60a","#7b2cbf"];
 
       let t = 0;
       const tick = () => {
@@ -415,30 +572,34 @@
         if (alive && t < 220) requestAnimationFrame(tick);
         else ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
       };
-
       requestAnimationFrame(tick);
     }
 
+    const yesBtn = document.getElementById("yesBtn");
+    const noBtn = document.getElementById("noBtn");
+    const resultBox = document.getElementById("resultBox");
+    const resultTitle = document.getElementById("resultTitle");
+    const resultText = document.getElementById("resultText");
+
+    function showResult(title, text) {
+      resultTitle.textContent = title;
+      resultText.textContent = text;
+      resultBox.style.display = "block";
+    }
+
     yesBtn.addEventListener("click", () => {
-      showResult(
-        "YAYYYYY!!! 💘",
-        `${TO_NAME}, you just made ${FROM_NAME} the happiest person. Now come here and gimme that Valentine kiss 😄`
-      );
+      showResult("YAYYYYY!!! 💘", "I love you.");
       yesBtn.disabled = true;
       noBtn.disabled = true;
       noBtn.style.opacity = 0.4;
-
       confettiBurst();
-      for (let i = 0; i < 28; i++) setTimeout(spawnHeart, i * 30);
     });
 
-    // --- "No" button dodge ---
     function moveNoButton() {
       const padding = 10;
       const rect = noBtn.getBoundingClientRect();
       const maxX = window.innerWidth - rect.width - padding;
       const maxY = window.innerHeight - rect.height - padding;
-
       const x = Math.max(padding, Math.random() * maxX);
       const y = Math.max(padding, Math.random() * maxY);
 
@@ -450,11 +611,6 @@
 
     noBtn.addEventListener("mouseenter", moveNoButton);
     noBtn.addEventListener("touchstart", (e) => { e.preventDefault(); moveNoButton(); }, { passive: false });
-
-    noBtn.addEventListener("click", () => {
-      showResult("Okay okay 😳", "That button was kidding. Try the green one 😄");
-    });
   </script>
 </body>
 </html>
-
