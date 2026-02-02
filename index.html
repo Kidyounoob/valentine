@@ -1,1 +1,460 @@
+<!-- /index.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Aiden 💘 Hailie</title>
+  <meta name="description" content="A Valentine site made by Aiden for Hailie." />
+  <meta name="theme-color" content="#ff4d6d" />
+  <style>
+    :root{
+      --bg1:#ffe0ec;
+      --bg2:#ff7aa2;
+      --bg3:#7b2cbf;
+      --card: rgba(255,255,255,.78);
+      --stroke: rgba(255,255,255,.55);
+      --shadow: 0 18px 60px rgba(0,0,0,.14);
+      --text:#1f1f1f;
+      --muted: rgba(31,31,31,.72);
+      --pink:#ff4d6d;
+      --yes:#16a34a;
+      --no:#ef4444;
+      --radius: 26px;
+      --max: 980px;
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--text);
+      overflow-x:hidden;
+      background:
+        radial-gradient(1200px 700px at 15% 10%, rgba(255,255,255,.55), transparent 60%),
+        radial-gradient(1000px 600px at 85% 20%, rgba(255,255,255,.35), transparent 60%),
+        radial-gradient(circle at 25% 15%, var(--bg1), transparent 55%),
+        radial-gradient(circle at 80% 30%, var(--bg2), transparent 55%),
+        radial-gradient(circle at 50% 85%, rgba(123,44,191,.55), transparent 60%),
+        linear-gradient(160deg, #ffb3c7 0%, #ff5d8f 45%, #7b2cbf 100%);
+    }
+
+    .wrap{
+      min-height:100svh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 22px 14px 40px;
+      position:relative;
+      isolation:isolate;
+    }
+
+    /* floating hearts */
+    .heart{
+      position:absolute;
+      width:14px;height:14px;
+      transform: rotate(45deg);
+      opacity:.6;
+      animation: floatUp linear forwards;
+      filter: blur(.1px);
+      z-index:0;
+      pointer-events:none;
+    }
+    .heart::before,.heart::after{
+      content:"";
+      position:absolute;
+      width:14px;height:14px;
+      border-radius:50%;
+      background: inherit;
+    }
+    .heart::before{ left:-7px; top:0; }
+    .heart::after{ left:0; top:-7px; }
+    @keyframes floatUp{
+      from{ transform: translateY(0) rotate(45deg); }
+      to{ transform: translateY(-125vh) rotate(45deg); }
+    }
+
+    .container{
+      width:min(100%, var(--max));
+      display:grid;
+      gap:16px;
+      z-index:1;
+    }
+
+    .card{
+      background: var(--card);
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .hero{
+      display:grid;
+      gap:16px;
+      grid-template-columns: 160px 1fr;
+      align-items:center;
+    }
+
+    @media (max-width: 720px){
+      .hero{ grid-template-columns: 1fr; text-align:center; }
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.7);
+      font-weight: 700;
+      font-size: 13px;
+      width: fit-content;
+    }
+
+    @media (max-width: 720px){
+      .badge{ margin: 0 auto; }
+    }
+
+    h1{
+      margin: 10px 0 6px;
+      font-size: clamp(30px, 5vw, 48px);
+      letter-spacing: -0.02em;
+      line-height: 1.06;
+    }
+
+    .sub{
+      margin:0 0 10px;
+      font-size: 16px;
+      line-height: 1.55;
+      color: var(--muted);
+    }
+
+    .names{
+      font-weight: 800;
+      color: rgba(31,31,31,.92);
+    }
+
+    .photo{
+      width: 160px;
+      height: 160px;
+      border-radius: 999px;
+      object-fit: cover;
+      border: 3px solid rgba(255,255,255,.72);
+      box-shadow: 0 14px 35px rgba(0,0,0,.16);
+      background: rgba(255,255,255,.55);
+    }
+    @media (max-width: 720px){
+      .photo{ margin: 0 auto; width: 170px; height: 170px; }
+    }
+
+    .grid2{
+      display:grid;
+      gap:16px;
+      grid-template-columns: 1.1fr .9fr;
+      align-items:stretch;
+    }
+    @media (max-width: 900px){
+      .grid2{ grid-template-columns: 1fr; }
+    }
+
+    .askImg{
+      width:100%;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.65);
+      box-shadow: 0 16px 40px rgba(0,0,0,.12);
+      background: rgba(255,255,255,.55);
+      object-fit: contain;
+      max-height: 360px;
+    }
+
+    .btnRow{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:flex-start;
+      margin-top: 12px;
+    }
+    @media (max-width: 720px){
+      .btnRow{ justify-content:center; }
+    }
+
+    button{
+      border:0;
+      border-radius: 16px;
+      padding: 12px 18px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor:pointer;
+      box-shadow: 0 12px 28px rgba(0,0,0,.14);
+      transition: transform 120ms ease, opacity 120ms ease, box-shadow 120ms ease;
+      user-select:none;
+    }
+    button:active{ transform: translateY(1px) scale(.99); }
+
+    .yes{ background: var(--yes); color: #fff; }
+    .no{
+      background: #fff;
+      color: var(--no);
+      border: 2px solid rgba(239,68,68,.22);
+      position: relative;
+    }
+
+    .result{
+      display:none;
+      margin-top: 14px;
+      padding: 14px 14px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.75);
+      border: 1px solid rgba(255,255,255,.62);
+    }
+    .result strong{ font-size: 18px; display:block; }
+    .result span{ display:block; margin-top: 6px; color: var(--muted); line-height: 1.5; }
+
+    .mini{
+      font-size: 13px;
+      color: rgba(31,31,31,.7);
+      margin-top: 10px;
+    }
+
+    .fallback{
+      display:none;
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px dashed rgba(31,31,31,.28);
+      background: rgba(255,255,255,.55);
+      color: rgba(31,31,31,.78);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    canvas.confetti{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index: 5;
+    }
+  </style>
+</head>
+<body>
+  <canvas class="confetti" id="confetti"></canvas>
+
+  <div class="wrap">
+    <main class="container" role="main" aria-label="Valentine website">
+      <section class="card hero">
+        <img id="hailiePhoto" class="photo" alt="Hailie photo" />
+        <div>
+          <div class="badge">💌 Valentine Request</div>
+          <h1>Hailie… will you be my Valentine? 💖</h1>
+          <p class="sub">
+            From <span class="names" id="fromName">Aiden</span> to
+            <span class="names" id="toName">Hailie</span> — I made this just to ask you one thing.
+            You’re my favorite person, and I’d love to make Valentine’s Day special with you.
+          </p>
+
+          <div class="btnRow">
+            <button class="yes" id="yesBtn">Yes!!! 🥰</button>
+            <button class="no" id="noBtn">No 😅</button>
+          </div>
+
+          <div class="result" id="resultBox" aria-live="polite">
+            <strong id="resultTitle"></strong>
+            <span id="resultText"></span>
+          </div>
+
+          <div class="fallback" id="photoFallback">
+            If the photo doesn’t load, the image host may block hotlinking.
+            Easiest fix: upload the image into your GitHub repo as <b>assets/hailie.jpg</b>
+            and change the URL in the code.
+          </div>
+        </div>
+      </section>
+
+      <section class="grid2">
+        <section class="card">
+          <div class="badge">🫶 Proof I’m serious</div>
+          <h2 style="margin:12px 0 8px; font-size:22px; letter-spacing:-.01em;">This is me asking you 👇</h2>
+          <p class="sub" style="margin:0 0 12px;">
+            I had to make it official. I hope this makes you smile.
+          </p>
+          <img id="askImage" class="askImg" alt="Aiden asking Hailie to be his Valentine" />
+          <div class="fallback" id="askFallback">
+            If this image doesn’t load, upload it to your repo as <b>assets/aiden-ask.png</b>
+            and update the URL in the code.
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="badge">✨ A little note</div>
+          <h2 style="margin:12px 0 8px; font-size:22px; letter-spacing:-.01em;">Hailie,</h2>
+          <p class="sub" style="margin:0 0 10px;">
+            You make everything better. If you say yes, I’ll handle the date and the snacks.
+          </p>
+          <p class="sub" style="margin:0;">
+            (And if you try to press “No”… that button gets shy 😄)
+          </p>
+          <div class="mini">Made with ❤️ on GitHub Pages</div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // --- Customize here ---
+    const FROM_NAME = "Aiden";
+    const TO_NAME = "Hailie";
+
+    const HAILIE_PHOTO_URL =
+      "https://image2url.com/r2/default/images/1770001045114-1d56c415-973a-49a5-8de7-9645e06c9565.jpg";
+
+    const ASK_IMAGE_URL =
+      "https://image2url.com/r2/default/images/1770001083301-98a99851-73cb-4efd-bd1b-def02bdf40b8.png";
+
+    // --- Background hearts ---
+    const heartColors = ["#ff4d6d","#ff758f","#ffb3c1","#ffffff"];
+    function spawnHeart() {
+      const h = document.createElement("div");
+      h.className = "heart";
+      const size = Math.random() * 14 + 10;
+      h.style.width = `${size}px`;
+      h.style.height = `${size}px`;
+      h.style.left = `${Math.random() * 100}vw`;
+      h.style.bottom = `-24px`;
+      h.style.background = heartColors[Math.floor(Math.random() * heartColors.length)];
+      h.style.animationDuration = `${Math.random() * 3.2 + 3.8}s`;
+      h.style.opacity = `${Math.random() * 0.35 + 0.35}`;
+      document.body.appendChild(h);
+      setTimeout(() => h.remove(), 9000);
+    }
+    setInterval(spawnHeart, 220);
+
+    // --- Populate content ---
+    document.getElementById("fromName").textContent = FROM_NAME;
+    document.getElementById("toName").textContent = TO_NAME;
+
+    const hailiePhoto = document.getElementById("hailiePhoto");
+    const askImage = document.getElementById("askImage");
+    const photoFallback = document.getElementById("photoFallback");
+    const askFallback = document.getElementById("askFallback");
+
+    hailiePhoto.src = HAILIE_PHOTO_URL;
+    askImage.src = ASK_IMAGE_URL;
+
+    hailiePhoto.onerror = () => { photoFallback.style.display = "block"; };
+    askImage.onerror = () => { askFallback.style.display = "block"; };
+
+    // --- Buttons ---
+    const yesBtn = document.getElementById("yesBtn");
+    const noBtn = document.getElementById("noBtn");
+    const resultBox = document.getElementById("resultBox");
+    const resultTitle = document.getElementById("resultTitle");
+    const resultText = document.getElementById("resultText");
+
+    function showResult(title, text) {
+      resultTitle.textContent = title;
+      resultText.textContent = text;
+      resultBox.style.display = "block";
+    }
+
+    // --- Confetti (no libraries) ---
+    const canvas = document.getElementById("confetti");
+    const ctx = canvas.getContext("2d");
+
+    function resizeCanvas() {
+      canvas.width = Math.floor(window.innerWidth * devicePixelRatio);
+      canvas.height = Math.floor(window.innerHeight * devicePixelRatio);
+      canvas.style.width = `${window.innerWidth}px`;
+      canvas.style.height = `${window.innerHeight}px`;
+      ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
+    }
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
+
+    function confettiBurst() {
+      const pieces = Array.from({ length: 180 }, () => ({
+        x: window.innerWidth / 2,
+        y: window.innerHeight * 0.22,
+        vx: (Math.random() - 0.5) * 12,
+        vy: Math.random() * -10 - 6,
+        g: 0.35 + Math.random() * 0.25,
+        s: 3 + Math.random() * 5,
+        r: Math.random() * Math.PI,
+        vr: (Math.random() - 0.5) * 0.3,
+        a: 1
+      }));
+
+      const colors = ["#ff4d6d","#ff758f","#ffb3c1","#ffffff","#16a34a","#ffd60a"];
+
+      let t = 0;
+      const tick = () => {
+        t += 1;
+        ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+        for (const p of pieces) {
+          p.vy += p.g;
+          p.x += p.vx;
+          p.y += p.vy;
+          p.r += p.vr;
+          p.a *= 0.992;
+
+          ctx.save();
+          ctx.globalAlpha = Math.max(0, p.a);
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.r);
+          ctx.fillStyle = colors[(Math.random() * colors.length) | 0];
+          ctx.fillRect(-p.s/2, -p.s/2, p.s, p.s * 1.6);
+          ctx.restore();
+        }
+
+        const alive = pieces.some(p => p.y < window.innerHeight + 60 && p.a > 0.06);
+        if (alive && t < 220) requestAnimationFrame(tick);
+        else ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+      };
+
+      requestAnimationFrame(tick);
+    }
+
+    yesBtn.addEventListener("click", () => {
+      showResult(
+        "YAYYYYY!!! 💘",
+        `${TO_NAME}, you just made ${FROM_NAME} the happiest person. Now come here and gimme that Valentine kiss 😄`
+      );
+      yesBtn.disabled = true;
+      noBtn.disabled = true;
+      noBtn.style.opacity = 0.4;
+
+      confettiBurst();
+      for (let i = 0; i < 28; i++) setTimeout(spawnHeart, i * 30);
+    });
+
+    // --- "No" button dodge ---
+    function moveNoButton() {
+      const padding = 10;
+      const rect = noBtn.getBoundingClientRect();
+      const maxX = window.innerWidth - rect.width - padding;
+      const maxY = window.innerHeight - rect.height - padding;
+
+      const x = Math.max(padding, Math.random() * maxX);
+      const y = Math.max(padding, Math.random() * maxY);
+
+      noBtn.style.position = "fixed";
+      noBtn.style.left = `${x}px`;
+      noBtn.style.top = `${y}px`;
+      noBtn.style.zIndex = 4;
+    }
+
+    noBtn.addEventListener("mouseenter", moveNoButton);
+    noBtn.addEventListener("touchstart", (e) => { e.preventDefault(); moveNoButton(); }, { passive: false });
+
+    noBtn.addEventListener("click", () => {
+      showResult("Okay okay 😳", "That button was kidding. Try the green one 😄");
+    });
+  </script>
+</body>
+</html>
 
